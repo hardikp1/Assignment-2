@@ -42,14 +42,14 @@ The goal for Part 1 is to collect some text from the Internet that you can later
 
 Project Gutenberg (http://www.gutenberg.org/) is a website that provides over 55,000 e-books that are freely available to the public. Unlike some sites, all of the texts on Project Gutenberg are in the public domain, which means they are no longer protected by copyright. For example, the site offers 171 works by Charles Dickens. The best thing about these texts is that they are available in plain text format, which makes them easy to analyze using Python.
 
-To download a book from Project Gutenberg, first use the search engine on the Project Gutenberg website to find a book you are interested in downloading. For example, if you want to download O*liver Twist* by Charles Dickens, search for it on the website. Once you have found the book you want to download, go to its page on the Project Gutenberg website. Find the "Plain Text UTF-8" link on the book's page. Copy the link to the plain text version of the book. In the case of *Oliver Twist*, the link to the plain text version is `"http://www.gutenberg.org/ebooks/730.txt.utf-8"`.
+To download a book from Project Gutenberg, first use the search engine on the Project Gutenberg website to find a book you are interested in downloading. For example, if you want to download O*liver Twist* by Charles Dickens, search for it on the website. Once you have found the book you want to download, go to its page on the Project Gutenberg website. Find the "Plain Text UTF-8" link on the book's page. Copy the link to the plain text version of the book. In the case of *Oliver Twist*, the link to the plain text version is `"https://www.gutenberg.org/cache/epub/730/pg730.txt"`.
 
 To download the text inside Python, you can use the following code:
 
 ```python
 import urllib.request
 
-url = 'http://www.gutenberg.org/ebooks/730.txt.utf-8'
+url = 'https://www.gutenberg.org/cache/epub/730/pg730.txt'
 with urllib.request.urlopen(url) as f:
     text = f.read().decode('utf-8')
     print(text) # for testing
@@ -64,8 +64,11 @@ One limitation of using Project Gutenberg is that they impose a limit on how man
 Wikipedia is another valuable source of data that can be easily accessed and parsed using the [mediawiki library](https://github.com/barrust/mediawiki) which is a python wrapper and parser for the **MediaWiki API**. To install the library, you can use the following command in the Command Prompt or Terminal:
 
 ```shell
+# For Windows users
 > python -m pip install pymediawiki
-> python3 -m pip install pymediawiki # on macOS Terminal
+
+# For macOS users
+> python3 -m pip install pymediawiki
 ```
 
 Once you have installed the library, you can use it to search Wikipedia, get article summaries, and extract data like links and images from a page. To fetch a particular article and print out its sections, you can use the following Python code:
@@ -82,10 +85,7 @@ print(babson.content)
 This code will fetch the article with the given title and print its title and content. The output will look like this:
 
 ```txt
-Babson College 
-
-
-Babson College is a private business school in Wellesley, Massachusetts. Established in 1919, its central focus is on entrepreneurship education. It was founded by Roger W. Babson as an all-male business institute but is now coeducational.
+Babson College (Babson) is a private business school in Wellesley, Massachusetts. Established in 1919, Babson's central focus is on entrepreneurship education and its use in creating economic and social value. The college was founded by Roger W. Babson as an all-male business institute and became coeducational in 1970.
 ...
 ```
 
@@ -95,13 +95,18 @@ You can also access other properties of a page, such as its categories, sections
 
 (**Note**: I have not tested this API since the announcment of shutting down free Twitter API. The free version of Twitter API has been deprecated and replaced with a new version that requires application approval and authentication with a paid subscription. To use the Twitter API, you need to apply to Twitter for a developer account and explain the purpose of what you are doing with the data, which Twitter will manually review.) 
 
+(**Update**: You'll need at least the Basic access tier to search recent tweets, which isn't free. You can subscribe to it in your [Dashboard](https://developer.twitter.com/en/portal/dashboard) in the Developer Portal.)
+
 If you have access to a Twitter developer account and the necessary API keys and tokens, you can use the `tweepy` library to search for tweets.
 
 To install tweepy, run the following command in Command Prompt or Terminal:
 
 ```shell
+# For Windows users
 > python -m pip install tweepy
-> python3 -m pip install tweepy # on macOS Terminal
+
+# For macOS users
+> python3 -m pip install tweepy
 ```
 
 Here is a simple example for searching tweets containing `Babson College`:
@@ -132,8 +137,11 @@ Note: Reddit also requires users to register and create an application in order 
 To get reddit data, you need to install the [PRAW library](https://github.com/praw-dev/praw) by running the following command in Command Prompt or Terminal:
 
 ```shell
+# For Windows users
 > python -m pip install praw
-> python3 -m pip install praw # on macOS Terminal
+
+# For macOS users
+> python3 -m pip install praw
 ```
 
 Here's an example from the [PRAW docs page](https://praw.readthedocs.io/en/stable/getting_started/quick_start.html):
@@ -141,14 +149,19 @@ Here's an example from the [PRAW docs page](https://praw.readthedocs.io/en/stabl
 ```python
 import praw
 import config
+
+
 reddit = praw.Reddit(client_id=config.client_id,
                      client_secret=config.client_secret,
                      username=config.username,
                      password=config.password,
                      user_agent=config.user_agent)
+
 sub = 'learnpython'
 submissions = reddit.subreddit(sub).top('day', limit=5)
-top5 = [(submission.title, submission.selftext) for submission in submissions]
+for submission in submissions:
+    print(submission.title)
+    print(submission.selftext)
 ```
 
 ### Data Source: News API
@@ -156,8 +169,11 @@ top5 = [(submission.title, submission.selftext) for submission in submissions]
 You can use `newsapi-python` library to fetch news articles from [News API](https://newsapi.org/docs/). You need to install the [newsapi-python library](https://github.com/mattlisiv/newsapi-python) by running the following command in Command Prompt or Terminal:
 
 ```shell
+# For Windows users
 > python -m pip install newsapi-python
-> python3 -m pip install newsapi-python # on macOS Terminal
+
+# For macOS users
+> python3 -m pip install newsapi-python
 ```
 
 Here's an example from the [Python client library page](https://newsapi.org/docs/client-libraries/python) in News API Documentation:
@@ -191,33 +207,44 @@ sources = newsapi.get_sources()
 
 ### Data Source: Newspaper Articles
 
-You can also use `Newspaper3k` package to scrape and curate news articles. You need to install the [Newspaper3k library](https://github.com/codelucas/newspaper) by running the following command in Command Prompt or Terminal:
+You can also use `Newspaper4k` package to scrape and curate news articles. You need to install the [Newspaper4k library](https://github.com/AndyTheFactory/newspaper4k) by running the following command in Command Prompt or Terminal:
 
 ```shell
-> python -m pip install newspaper3k
-> python3 -m pip install newspaper3k # on macOS Terminal
+# For Windows users
+> python -m pip install newspaper4k
+
+# For macOS users
+> python3 -m pip install newspaper4k
 ```
 
-Here's an example from the [Newspaper3k docs page](https://newspaper.readthedocs.io/en/latest/):
+Here's an example from the [Newspaper4k Docs page](https://newspaper4k.readthedocs.io/en/latest/):
 
 ```python
-from newspaper import Article
+import newspaper
 
-url = 'http://fox13now.com/2013/12/30/new-year-new-laws-obamacare-pot-guns-and-drones/'
-article = Article(url)
-article.download()
-article.parse()
-article_text = article.text
-print(article_text) # Output: Washington (CNN) -- Not everyone subscribes to a New Year's resolution...
+article = newspaper.article('https://edition.cnn.com/2023/10/29/sport/nfl-week-8-how-to-watch-spt-intl/index.html')
+
+print(article.authors)
+# ['Hannah Brewitt', 'Minute Read', 'Published', 'Am Edt', 'Sun October']
+
+print(article.publish_date)
+# 2023-10-29 09:00:15.717000+00:00
+
+print(article.text)
+# New England Patriots head coach Bill Belichick, right, embraces Buffalo Bills head coach Sean McDermott ...
 ```
+
 
 ### Data Source: IMDB Movie Reviews
 
 To get the IMDB data, you need to install [`cinemagoer` library ](https://github.com/cinemagoer/cinemagoer) by running the following command in Command Prompt or Terminal:
 
 ```shell
+# For Windows users
 > python -m pip install cinemagoer
-> python3 -m pip install cinemagoer # on macOS Terminal
+
+# For macOS users
+> python3 -m pip install cinemagoer
 ```
 
 Here's an example to print the first review of the movie "The Dark Knight":
@@ -232,18 +259,33 @@ movie = ia.search_movie("The Dark Knight")[0]
 print(movie.movieID)
 # '0468569'
 
-movie_reviews = ia.get_movie_reviews('0468569')
-print(movie_reviews['data']['reviews'][0]['content'])
+# Get reviews
+movie = ia.get_movie('0468569', info=['reviews']) # Make sure to add the second argument
+reviews = movie.get('reviews', [])
+
+for review in reviews:
+    print(review['content'])
+    print()
+
+
+# Get actor
+matt_damon = ia.get_person_filmography('0000354')
+
+# Get Matt Damon's movies
+data = matt_damon['data']
+filmography = data['filmography']
+films_as_actor = filmography['actor']
+print(films_as_actor)
 ``` 
 
 ### Data Source: More Data Sources
 
 There are many other data sources that you can utilize in your project:
 
-- [SMS Spam Collection](http://www.dt.fee.unicamp.br/~tiago/smsspamcollection/) is composed by 5,574 English, real and non-enconded messages, tagged according being legitimate (ham) or spam.
+- [SMS Spam Collection](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset) is composed by 5,574 English, real and non-enconded messages, tagged according being legitimate (ham) or spam.
 - [Enron email dataset](https://www.cs.cmu.edu/~./enron/)
 - [Yelp dataset](https://www.yelp.com/dataset)
-- [News articles](https://archive.ics.uci.edu/ml/datasets/Reuters-21578+Text+Categorization+Collection) in UCI Machine Learning Repository
+- [News articles](https://archive.ics.uci.edu/dataset/137/reuters+21578+text+categorization+collection) in UCI Machine Learning Repository
 - [Awesome Public Datasets](https://github.com/awesomedata/awesome-public-datasets)
 - [Kaggle datasets](https://www.kaggle.com/datasets), which includes a variety of text datasets, such as news articles and movie reviews.
 - [Amazon AWS Registry of Open Data](https://registry.opendata.aws/), which includes several text datasets, such as Wikipedia and Common Crawl.
@@ -262,12 +304,12 @@ import pickle
 
 # Save data to a file (will be part of your data fetching script)
 
-with open('dickens_texts.pickle','w') as f:
+with open('dickens_texts.pkl','w') as f:
     pickle.dump(charles_dickens_texts,f)
 
 
 # Load data from a file (will be part of your data processing script)
-with open('dickens_texts.pickle','r') as f:
+with open('dickens_texts.pkl','r') as f:
     reloaded_copy_of_texts = pickle.load(f)
 ```
 
@@ -285,6 +327,9 @@ One way to begin to process your text is to take each unit of text (for instance
 
 ### Computing Summary Statistics
 
+
+(**Note**: This step is required.)
+
 Apart from word frequencies, there are other ways to summarize text. For example, you may want to identify the top 10 words in each text, or find the words that appear most frequently in each text, but not in other texts. Before this step, you may want to remove stop words first. 
 
 ### Removing Stop words
@@ -298,8 +343,11 @@ Stop words are words that occur frequently in text but do not provide any useful
 To use NLTK, you need to install `nltk` by running the following command in in Command Prompt or Terminal:
 
 ```shell
+# For Windows users
 > python -m pip install nltk
-> python3 -m pip install nltk # on macOS Terminal
+
+# For macOS users
+> python3 -m pip install nltk
 ```
 
 Here is an example of doing [sentiment analysis](https://en.wikipedia.org/wiki/Sentiment_analysis) using the `VADER` library in NLTK::
@@ -316,9 +364,14 @@ print(score)
 
 Notice: If you receive `Resource vader_lexicon not found` error when using `nltk`, you need to enter `python` in **Command Prompt** (or `python3` in **Terminal** on macOS), then enter `import nltk` and `nltk.download('vader_lexicon')` in Python interactive shell.
 
-If you perform some natural language processing, you may be able to say something interesting about the text you harvested from the web. For instance, if you listen to a particular Twitter hashtag on a political topic, can you gauge the mood of the country by looking at the sentiment of each tweet that comes by in the stream? Which of recent movies received most negative reviews? There are tons of cool options here!
+You can also use [TextBlob](https://github.com/sloria/TextBlob) library, which is built on top of NLTK, for almost everything that NLTK does. Below is the brief introduction of TextBlob from its GitHub page:
 
-If you perform natural language processing, you can draw interesting insights from text data collected from the web. For instance, if you listen to a particular Twitter hashtag on a political topic, can you gauge the mood of the country by looking at the sentiment of each tweet that comes by in the stream? Which of recent movies received most negative reviews? There are tons of cool options here!
+> TextBlob is a Python library for processing textual data. It provides a simple API for diving into common natural language processing (NLP) tasks such as part-of-speech tagging, noun phrase extraction, sentiment analysis, classification, and more.
+
+If you perform natural language processing, you can draw interesting insights from text data collected from the web. For instance, if you monitor a specific subreddit related to a political topic, you can gauge the sentiment of the community by analyzing the text of each post and comment. Similarly, you can analyze discussions on subreddits dedicated to movies to identify which recent movies have received the most negative reviews. There are tons of cool options here!
+
+
+
 
 ### Text Similarity
 
@@ -378,7 +431,7 @@ You can use Markov analysis to learn a generative model of the text that you col
 
 ### More 
 
-You can explore further possibilities by even using the new [OpenAI API](https://openai.com/blog/openai-api).
+You can explore further possibilities by using the [OpenAI API](https://platform.openai.com/docs/introduction).
 
 ---
 
@@ -407,7 +460,7 @@ What data source(s) did you use? What technique(s) did you use to process or ana
 
 Describe your implementation at a system architecture level. You should NOT walk through your code line by line, or explain every function (we can get that from your docstrings). Instead, talk about the major components, algorithms, data structures and how they fit together. You should also discuss at least one design decision where you had to choose between multiple alternatives, and explain why you made the choice. Use shared links and/or screenshots to describe how you used ChatGPT to help you or learn new things.
 
-**3. Results** (~2-3 paragraphs + figures/examples)
+**3. Results** (~1-3 paragraphs + figures/examples)
 
 Present what you accomplished in your project:
 
@@ -425,8 +478,8 @@ From a learning perspective, mention what you learned through this project, how 
 ## Submitting your Project
 
 1. Push all the code and updated `README.md` to the GitGub repository.
-2. Create a pull request to the upstream repository. Please learn how to create a pull request by following [this instruction](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request#creating-a-pull-request).
+2. Create a pull request to the upstream repository. Please learn how to create a pull request by following [this instruction](https://docs.github.com/en/desktop/working-with-your-remote-repository-on-github-or-github-enterprise/creating-an-issue-or-pull-request-from-github-desktop#creating-a-pull-request).
 3. Submit your project's GitHub repository URL to Canvas.
 
 ---
-*updated: 10/23/2023*
+*updated: 3/06/2024*
